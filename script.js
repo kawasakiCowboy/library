@@ -1,5 +1,4 @@
 const myLibrary = new Array();
-let syka = "syka";
 
 const userTitle = document.querySelector("#title");
 const userAuthor = document.querySelector("#author");
@@ -8,11 +7,12 @@ const userRead = document.querySelector("#read");
 const userCreate = document.querySelector(".send-button");
 const cards = document.querySelector(".cards");
 
+
 userCreate.addEventListener("click", () => {
     addBookToLibrary(userTitle.value,userAuthor.value,userPages.value,userRead.checked);
-    userTitle.value = "";
-    userAuthor.value = "";
-    userPages.value = "";
+    // userTitle.value = "";
+    // userAuthor.value = "";
+    // userPages.value = "";
     userRead.checked = false;
 });
 
@@ -29,25 +29,42 @@ function Book(title,author,pages,read) {
 function addBookToLibrary(title,author,pages,read) {
     myLibrary.push(new Book(title,author,pages,read));
     console.table(myLibrary);
-    addBookCard()
+    updateCards()
 }
 
 
 
-function addBookCard() {
+function updateCards() {
     let bookCardList = ""
     myLibrary.forEach((item) => {
-        bookCardList += `<div class="cards">
-     <div class="book-card">
-        <p>Title: ${item.title}</p>
+        bookCardList += `
+        <div class="book-card" ">
+        <p">Title: ${item.title}</p>
         <p>Author: ${item.author}</p>
         <p>Pages: ${item.pages}</p>
         <p>${item.read === true ? "Is read" : "Not read"}</p>
-     </div>
-   </div>`
+        <div class="card-buttons" id="${item.title}">
+        <input type="button" class="change-status" value="Change status">
+        <input type="button" class="delete" value="Delete">
+      </div>
+        </div>`
     })
     cards.innerHTML = bookCardList;
+    let deleteButton = document.querySelectorAll(".delete")
+    deleteButton.forEach(button => button.addEventListener("click", (e) => {
+        myLibrary.splice((myLibrary.findIndex((item) => item.title === e.target.closest("div").id)),1);
+        console.log(e.target.closest("div").id)
+        updateCards();
+    }))
+    let changeStatusButton = document.querySelectorAll(".change-status");
+    changeStatusButton.forEach(button => button.addEventListener("click", (e) => {
+        let currentBook = (myLibrary[myLibrary.findIndex((item) => item.title === e.target.closest("div").id)]);
+        currentBook.read = !currentBook.read;
+        updateCards();
+    }))
 }
+
+
 
 
 
