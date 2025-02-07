@@ -12,6 +12,13 @@
     flex-direction: column;
 }
 
+span {
+    max-width: 235px;
+    padding: 20px;
+    margin: 20px;
+}
+
+
 .form {
     display: flex;
     gap: 10px;

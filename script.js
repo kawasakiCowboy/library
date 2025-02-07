@@ -6,9 +6,22 @@ const userPages = document.querySelector("#pages");
 const userRead = document.querySelector("#read");
 const userCreate = document.querySelector(".send-button");
 const cards = document.querySelector(".cards");
+const errorField = document.querySelector(".error");
 
 
 userCreate.addEventListener("click", () => {
+    if (!userTitle.checkValidity()) {
+        userTitle.reportValidity();
+        return
+    }
+    if (!userAuthor.checkValidity()) {
+        userAuthor.reportValidity();
+        return
+    }
+    if (!userPages.checkValidity()) {
+        userPages.reportValidity();
+        return
+    }
     addBookToLibrary(userTitle.value,userAuthor.value,userPages.value,userRead.checked);
     // userTitle.value = "";
     // userAuthor.value = "";
@@ -30,10 +43,8 @@ class Book {
 
 function addBookToLibrary(title,author,pages,read) {
     myLibrary.push(new Book(title,author,pages,read));
-    console.table(myLibrary);
     updateCards()
 }
-
 
 
 function updateCards() {
